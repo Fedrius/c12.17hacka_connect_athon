@@ -7,17 +7,23 @@ body {
 }
 
 #gameBoard {
-    /*border: 1px solid #00ffff;*/
     display: inline-flex;
-    flex-flow: row wrap;
     justify-content: center;
     margin: auto;
-    height: 80%;
-    width: 80%;
+    height: 85%;
+    width: 65%;
 }
 
-.tile {
-    border: 1px solid #00ffff;
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 14%;
+    height: 100%;
+}
+
+.tile{
+    border: 1px solid #00ffff;
     height: 16%;
+    width: 100%;
 }
