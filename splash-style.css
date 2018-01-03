@@ -1,0 +1,26 @@
+*{
+    box-sizing: border-box;
+    margin: auto;
+}
+
+.background{
+    position: relative;
+    width: 100vw;
+    z-index: -1;
+}
+
+.content-container{
+
+}
+
+.token-container{
+    position: absolute;
+    width: 90vw;
+    height: 20vh;
+    display: flex;
+}
+
+.token{
+    width: 13%;
+
+}
