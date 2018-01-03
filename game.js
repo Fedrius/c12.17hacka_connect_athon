@@ -28,3 +28,8 @@ function switchPlayers(playerTokenArr) {
 console.log(playerTokenArr);
 switchPlayers(playerTokenArr);
 console.log(playerTokenArr);
+
+
+function checkDiagonals(dropPosition) {
+  while()
+}
