@@ -1,14 +1,13 @@
-
 //check drop position and store token functions
 
 var gameboardArr = null;
-var dropPosition = [];
+var droppedPosition = [];
 
 //function uses a regex g modifer to do a global match between 0 and 9. in this case would be find the column id number.
 //colIndex is the selected column index
 //last index of x is the most bottom position in the column
 
-function checkDroppedPosition(id){
+function checkDropPosition(id){
     var colIndex = parseInt(/[0-9]/g.match[id].join(''));
     dropPosition.push(colIndex, gameboardArr[colIndex].lastIndexOf('x'));
 }
@@ -21,39 +20,37 @@ function storeToken(DropPosArray){
     updateDisplay();
 }
 
+//colIndex is going to be dropped position at index 0
 function checkVerticalWin(colIndex){
     var theTokenColumn = gameboardArr[colIndex];
 
     var match = 0;
     for(var columnIndex = 0; columnIndex < theTokenColumn.length - 1; columnIndex++){
         if(theTokenColumn[columnIndex] === theTokenColumn[columnIndex + 1]){
-            match++
+            match++;
+            if(match >= 3){
+                console.log('winnnner');//player wins
+                break;
+            }
         } else {
             match = 0;
         }
     }
-
-    if(match > 3){
-       console.log('winnnner')//player wins
-    }
 }
 
-//
-
+//rowPosIndex is going to be droppedposition at index 1
 function checkHorizontalWin(rowPosIndex){
 
     var match = 0;
-    for(var columnIndex = 0; columnIndex < gameboardArr.length - 1; columnIndex++){
-        if(gameboardArr[columnIndex][rowPosIndex] === gameboardArr[columnIndex + 1][rowPosIndex]){
-            match++
+    for (var columnIndex = 0; columnIndex < gameboardArr.length - 1; columnIndex++) {
+        if (gameboardArr[columnIndex][rowPosIndex] === gameboardArr[columnIndex + 1][rowPosIndex]) {
+            match++;
+            if (match >= 3) {
+                console.log('winnnner');//player wins
+                break;
+            }
         } else {
             match = 0;
         }
     }
-
-    if(match > 3){
-        console.log('winner');
-    }
 }
-
-//need to go through the gameboardArr
