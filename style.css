@@ -1,0 +1,29 @@
+body {
+    background-color: black;
+    display: flex;
+    margin: 0;
+    height:100vh;
+    width: 100vw;
+}
+
+#gameBoard {
+    display: inline-flex;
+    justify-content: center;
+    margin: auto;
+    height: 85%;
+    width: 65%;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 14%;
+    height: 100%;
+}
+
+.tile{
+    border: 1px solid #00ffff;
+    height: 16%;
+    width: 100%;
+}
