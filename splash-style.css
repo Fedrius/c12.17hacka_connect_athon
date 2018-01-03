@@ -14,15 +14,15 @@ body{
     opacity: 0.9;
 }
 
-.intro{
+.intro-container{
+    align-content: center;
+    flex-wrap: wrap;
     position: absolute;
     display: flex;
+    display: none;
     width: 100vw;
     height: 100vh;
     z-index: 10;
-    align-content: center;
-    justify-content: center;
-    flex-wrap: wrap;
 }
 
 .title-card{
@@ -33,7 +33,6 @@ body{
 
 .start-button{
     display: flex;
-    display: none;
     color: white;
     font-family: 'Share Tech', sans-serif;
     font-size: 3em;
@@ -48,6 +47,7 @@ body{
 
 .player-number{
     display: flex;
+    display: none;
     color: white;
     font-family: 'Share Tech', sans-serif;
     font-size: 3em;
@@ -57,9 +57,10 @@ body{
 
 .player-number-container{
     display: flex;
+    display: none;
     align-content: center;
     justify-content: center;
-    width: 100%;
+    width: 70%;
 }
 
 .player-amount{
@@ -70,17 +71,22 @@ body{
     text-align: center;
 }
 
-.container{
-    display: none;
+.player-amount:hover{
+    cursor: pointer;
+    text-shadow: 0 0 10px #ffffff;
 }
 
-header{
-    width: 100vw;
-    height: 20vh;
-    display: flex;
-    align-content: center;
-    justify-content: space-around;
+.container{
+    /*display: flex;*/
 }
+
+/*header{*/
+    /*width: 100vw;*/
+    /*height: 20vh;*/
+    /*display: flex;*/
+    /*align-content: center;*/
+    /*justify-content: space-around;*/
+/*}*/
 
 .title{
     display: flex;
@@ -89,7 +95,7 @@ header{
 
 main{
     width: 100vw;
-    height: 80vh;
+    height: 100vh;
     position: relative;
     display: flex;
     align-content: center;
@@ -149,11 +155,11 @@ main{
 }
 
 .player-1-container{
-    display:none;
+    /*display:none;*/
 }
 
 .player-2-container{
-    /*display: none;*/
+    display: none;
 }
 
 .token-container{
@@ -164,7 +170,7 @@ main{
     justify-content: space-between;
 }
 
-.token{
+.token {
     width: 15%;
 }
 
