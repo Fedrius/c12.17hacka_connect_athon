@@ -16,49 +16,62 @@ var currentPlayer = playerTokenArr[0];
 function makePlayerTokenArr(num) {
   var playerTokenArr = [];
   for (var i=1;i<=num;i++) {
-    playerTokenArr.push(i);
+    playerTokenArr.push({
+      'playerNumber'
+    });
   }
   return playerTokenArr;
 }
 
-function switchPlayers(playerTokenArr) {
+function cyclePlayers(playerTokenArr) {
   playerTokenArr.push(playerTokenArr.shift());
 }
 
 console.log(playerTokenArr);
-switchPlayers(playerTokenArr);
+cyclePlayers(playerTokenArr);
 console.log(playerTokenArr);
 
-
-function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
-  var cursor = gameBoard[dropPosition[0]][dropPosition[1]];
+function checkNEDiagonals(dropPosition) { //dropPosition = array [col#, height]
+  var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
   var counter = 0;
-  //SW -> NE diag check
-  while(gameBoard[dropPosition[0]-1][dropPosition[1]+1] && cursor === gameBoard[dropPosition[0]-1][dropPosition[1]+1]) {
-    dropPosition[0]--; dropPosition[1]++;
-    cursor = gameBoard[dropPosition[0]][dropPosition[1]];
+  while( cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]+1]) { // while top right corner is the same token move to top right corner;
+    dropPosition[0]++; dropPosition[1]++;
+    if(dropPosition[0] === gameBoardArr[0].length || dropPosition[1] === gameBoardArr[0].length) {
+      break;
+    }
   }
-  while(cursor === gameBoard[dropPosition[0]+1][dropPosition[1]-1]) {
-    dropPosition[0]++; dropPosition[0]--;
-    cursor = gameBoard[dropPosition[0]][dropPosition[1]];
+  while(cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]-1]) {
+    dropPosition[0]--; dropPosition[1]--;
     counter++;
+    if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+      break;
+    }
   }
-  if (counter > 3) {
-    return playerWin(playerArr[0]);
+  if (counter >= 3) {
+    console.log('win');
+    // return playerWin(playerArr[0]);
   }
 }
 
-function checkNEDiagonals(dropPosition) {
-  var cursor = gameBoard[dropPosition[0]][dropPosition[1]];
+function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
+  var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
   var counter = 0;
-  while(cursor === gameBoard[dropPosition[0]+1][dropPosition[1]+1]) {
-    cursor = gameBoard[dropPosition[0]+1][dropPosition[1]+1];
+  //SW -> NE diag check
+  while( cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]+1]) {
+    dropPosition[0]--; dropPosition[1]++;
+    if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+      break;
+    }
   }
-  while(cursor === gameBoard[dropPosition[0]-1][dropPosition[1]-1]) {
-    cursor = gameBoard[dropPosition[0]-1][dropPosition[1]-1];
+  while(cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]-1]) {
+    dropPosition[0]++; dropPosition[1]--;
     counter++;
+    if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+      break;
+    }
   }
   if (counter > 3) {
-    return playerWin(playerArr[0]);
+    console.log('win');
+    // return playerWin(playerArr[0]);
   }
 }
