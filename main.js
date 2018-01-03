@@ -54,3 +54,7 @@ function checkHorizontalWin(rowPosIndex){
         }
     }
 }
+
+function checkDrawGame(){
+
+}
