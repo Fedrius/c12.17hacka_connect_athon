@@ -17,7 +17,9 @@ function makePlayerTokenArr(num) {
   var playerTokenArr = [];
   for (var i=1;i<=num;i++) {
     playerTokenArr.push({
-      'playerNumber'
+      'playerNumber': i,
+      'name': 'User' + i,
+      'tokenColor': '',
     });
   }
   return playerTokenArr;
