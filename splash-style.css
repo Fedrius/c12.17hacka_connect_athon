@@ -7,17 +7,6 @@ body{
     background-color: black;
 }
 
-.title-card{
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background-image: url("./images/Title Screen.png");
-    background-size: 100vw;
-    background-position: center;
-    z-index: 10;
-    display: none;
-}
-
 .background{
     position: absolute;
     width: 100vw;
@@ -25,27 +14,86 @@ body{
     opacity: 0.9;
 }
 
-main{
-    height: 100vh;
-    width: 100vw;
+.intro{
     position: absolute;
     display: flex;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
     align-content: center;
-    justify-content: space-around;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.header{
-    width: 90vw;
-    position: absolute;
+.title-card{
+    display: flex;
+    width: 100%;
+    align-content: center;
+}
+
+.start-button{
+    display: flex;
+    display: none;
+    color: white;
+    font-family: 'Share Tech', sans-serif;
+    font-size: 3em;
+    justify-content: center;
+    width: 100%;
+}
+
+.start-button:hover{
+    cursor: pointer;
+    text-shadow: 0 0 10px #ffffff;
+}
+
+.player-number{
+    display: flex;
+    color: white;
+    font-family: 'Share Tech', sans-serif;
+    font-size: 3em;
+    justify-content: center;
+    width: 100%;
+}
+
+.player-number-container{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.player-amount{
+    display: flex;
+    color: white;
+    font-family: 'Share Tech', sans-serif;
+    font-size: 3em;
+    text-align: center;
+}
+
+.container{
+    display: none;
+}
+
+header{
+    width: 100vw;
+    height: 20vh;
     display: flex;
     align-content: center;
     justify-content: space-around;
 }
 
 .title{
-    position: fixed;
     display: flex;
     width: 100%;
+}
+
+main{
+    width: 100vw;
+    height: 80vh;
+    position: relative;
+    display: flex;
+    align-content: center;
+    justify-content: space-around;
 }
 
 .content-container{
@@ -58,9 +106,10 @@ main{
 
 .player-input-container{
     display: flex;
-    width: 90vw;
-    height: 40vh;
+    width: 90%;
+    height: 40%;
     justify-content: space-between;
+    text-align: center;
 }
 
 .player-title{
@@ -70,9 +119,9 @@ main{
     text-align: center;
 }
 
-.player-input-container input{
+.player-input-container input[type=text]{
     width: 25vw;
-    height: 5vh;
+    height: 7vh;
     background: transparent;
     color: white;
     font-family: 'Share Tech', sans-serif;
@@ -80,10 +129,31 @@ main{
     border: none;
     border-bottom: solid 2px white;
     outline: none;
+    overflow: hidden;
+}
+
+.player-input-container input[type=button]{
+    width: 15vw;
+    height: 7vh;
+    background: transparent;
+    color: white;
+    font-family: 'Share Tech', sans-serif;
+    font-size: 1.5em;
+    border: solid 2px white;
+}
+
+.player-input-container input[type=button]:hover{
+    background: white;
+    color: black;
+    cursor: pointer;
+}
+
+.player-1-container{
+    display:none;
 }
 
 .player-2-container{
-    display: none;
+    /*display: none;*/
 }
 
 .token-container{
@@ -92,8 +162,6 @@ main{
     width: 90vw;
     height: 40vh;
     justify-content: space-between;
-
-
 }
 
 .token{
@@ -103,4 +171,5 @@ main{
 .token:hover{
     -webkit-filter: drop-shadow(0px 0px 10px #ffffff);
     filter: drop-shadow(0px 0px 10px #ffffff);
+    cursor: pointer;
 }
