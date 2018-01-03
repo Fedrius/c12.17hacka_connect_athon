@@ -30,6 +30,35 @@ switchPlayers(playerTokenArr);
 console.log(playerTokenArr);
 
 
-function checkDiagonals(dropPosition) {
-  while()
+function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
+  var cursor = gameBoard[dropPosition[0]][dropPosition[1]];
+  var counter = 0;
+  //SW -> NE diag check
+  while(gameBoard[dropPosition[0]-1][dropPosition[1]+1] && cursor === gameBoard[dropPosition[0]-1][dropPosition[1]+1]) {
+    dropPosition[0]--; dropPosition[1]++;
+    cursor = gameBoard[dropPosition[0]][dropPosition[1]];
+  }
+  while(cursor === gameBoard[dropPosition[0]+1][dropPosition[1]-1]) {
+    dropPosition[0]++; dropPosition[0]--;
+    cursor = gameBoard[dropPosition[0]][dropPosition[1]];
+    counter++;
+  }
+  if (counter > 3) {
+    return playerWin(playerArr[0]);
+  }
+}
+
+function checkNEDiagonals(dropPosition) {
+  var cursor = gameBoard[dropPosition[0]][dropPosition[1]];
+  var counter = 0;
+  while(cursor === gameBoard[dropPosition[0]+1][dropPosition[1]+1]) {
+    cursor = gameBoard[dropPosition[0]+1][dropPosition[1]+1];
+  }
+  while(cursor === gameBoard[dropPosition[0]-1][dropPosition[1]-1]) {
+    cursor = gameBoard[dropPosition[0]-1][dropPosition[1]-1];
+    counter++;
+  }
+  if (counter > 3) {
+    return playerWin(playerArr[0]);
+  }
 }
