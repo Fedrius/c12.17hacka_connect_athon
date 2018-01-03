@@ -4,23 +4,36 @@
 }
 
 .background{
-    position: relative;
+    position: absolute;
     width: 100vw;
     z-index: -1;
 }
 
 .content-container{
+    position: absolute;
+    display: flex;
+    align-content: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
 
+.player-input-container{
+    position: relative;
+    display: flex;
+    width: 90vw;
+    height: 40vh;
+    justify-content: space-between;
 }
 
 .token-container{
-    position: absolute;
-    width: 90vw;
-    height: 20vh;
+    position: relative;
     display: flex;
+    width: 90vw;
+    height: 40vh;
+    justify-content: space-between;
+
 }
 
 .token{
     width: 13%;
-
 }
