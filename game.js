@@ -1,8 +1,9 @@
 $(document).ready(initializeApp);
 
-var gameBoardArr = [];
-var playerArr = [];
+var gameBoardArr = createArrGameBoard();
+var playerArr = makePlayerTokenArr();
 var dropPosition = new Array(2);
+var maxTiles = calcMaxTiles();
 
 function initializeApp(){
     $('.start-button').on('click', startGame);
@@ -70,11 +71,6 @@ function getUserInfo(){
 
     cyclePlayers(playerArr);
 }
-
-var gameBoardArr = createArrGameBoard();
-var playerArr = makePlayerTokenArr();
-var dropPosition = new Array(2);
-var maxTiles = calcMaxTiles();
 
 function hideIntro(){
     $('.main-splash-container').hide();
