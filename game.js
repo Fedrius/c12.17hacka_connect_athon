@@ -157,14 +157,12 @@ function getFirstMove(){ // Determines which player gets to place token down fir
 }
 
 function cyclePlayers(array) {
-    columnColor();
     array.push(array.shift());
+    columnColor();
 }
 
 function columnColor(){
-
     var colorCode = playerArr[0].tokenColor.slice(-10,-4);
-
     $('.column').hover(
         function(){
             $(this).css({
