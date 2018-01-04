@@ -125,7 +125,7 @@ function createArrGameBoard(rows = 6, cols = 7) {
 
 function addClickHandlers(){
     $('.column').on('click', function() {
-        console.log('You clicked on column:' + $(this).attr('id'))
+        console.log('You clicked on column:' + $(this).attr('id'));
         checkDropPosition($(this).attr('id'));
         if(dropPosition[1] === -1) {
             console.log('that col is full'); return 'that col is full';
