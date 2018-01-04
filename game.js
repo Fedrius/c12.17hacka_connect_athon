@@ -89,6 +89,7 @@ function hideIntro(){
     $('.main-splash-container').hide();
     $('#gameBoard').css('display', 'flex');
     $('.background').css('opacity', 0.2);
+    randomizeFirstMove();
 }
 
 
@@ -153,7 +154,7 @@ function addClickHandlers(){
 function checkMove() {
 
 }
-function getFirstMove(){ // Determines which player gets to place token down first.
+function randomizeFirstMove(){ // Determines which player gets to place token down first.
     var random = Math.ceil(Math.random() * playerArr.length); // Creates a random number based on the length of array.
     while (random !== playerArr[0].playerNumber) { // As long as player at 0 does not equal random number
         cyclePlayers(playerArr); // continue to cycle array.
