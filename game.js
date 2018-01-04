@@ -166,5 +166,7 @@ function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
 }
 
 function checkDrawGame(){
+    for(var columnArrayIndex = 0; columnArrayIndex < gameboardArr.length; columnArrayIndex++){
 
+    }
 }
