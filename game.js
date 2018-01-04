@@ -324,11 +324,14 @@ function setTile(tileId){
 
 function turnTimerToggle() {
     var counter = 15 - Math.min(11, Math.floor(occupiedTileCounter/2)); // turnTimer starts at 15secs and will minus 1 every 2 turns; min. time = 4 secs
+    if(timerOn) {
+        clearInterval(startTimer);
+    }
     var startTimer = setInterval(function() {
         counter--;
         if (!counter) {
             clearInterval(startTimer);
-
+            turnTimerToggle();
         }
     }, 1000);
 
