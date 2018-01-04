@@ -310,6 +310,11 @@ function calcMaxTiles(){
 //checks if the game is a draw
 function checkDrawGame(){
     if(occupiedTileCounter === maxTiles){
-        console.log('draw game')
+        console.log('draw game');
+
     }
+}
+
+function resetGame(){
+    occupiedTileCounter = 0;
 }
