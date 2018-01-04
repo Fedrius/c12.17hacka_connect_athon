@@ -34,7 +34,6 @@ function selectPlayers(){
     maxTiles = calcMaxTiles();
     addClickHandlers();
 
-
     $('.intro-container').css('display', 'none');
     $('.main-splash-container').css('display', 'flex');
 }
@@ -54,6 +53,13 @@ function createInputFields(num){
     }
 
     $('.player-1-container').css('display', 'flex');
+
+    var img = ['bf0050', 'ff610f', '00ffff', 'ffa91a', '731572'];
+    for(var index2 = 0; index2 < 5; index2++){
+        var token = $("<img>").addClass('token glow').attr('src', './images/' + img[index2] + '.png').attr('alt', '');
+        $('.token-container').append(token);
+    }
+
     $('.token').on('click', getUserInfo);
 }
 
@@ -371,6 +377,26 @@ function calcMaxTiles(){
 //checks if the game is a draw
 function checkDrawGame(){
     if(occupiedTileCounter === maxTiles){
-        console.log('draw game')
+        console.log('draw game');
+        console.log('restarting in 5 sec');
+        setTimeout(softResetGame, 5000)
     }
+}
+
+function softResetGame(){
+    occupiedTileCounter = 0;
+    $('#gameBoard .column').remove();
+    gameBoardArr = createArrGameBoard(); //need to put in parameters for dynamic game board
+    createGameBoard(); //need to put in parameters for dynamic game board
+    //hide the modal if there was a win and want to restart game
+    addClickHandlers();
+}
+
+function resetBackToSplash(){
+    occupiedTileCounter = 0;
+    $('#gameBoard .column').remove();
+    $('.player-input-container div').remove();
+    $('.token-container img').remove();
+    $('#gameBoard').css('display', 'none');
+    $('.intro-container').css('display', 'flex');
 }
