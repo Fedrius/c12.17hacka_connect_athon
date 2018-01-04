@@ -4,6 +4,7 @@ var gameBoardArr = createArrGameBoard();
 var playerArr = makePlayerTokenArr();
 var dropPosition = new Array(2);
 var maxTiles = calcMaxTiles();
+var occupiedTileCounter = 0;
 
 function initializeApp(){
     $('.start-button').on('click', startGame);
@@ -151,13 +152,6 @@ function cyclePlayers(array) {
     array.push(array.shift());
 }
 
-//check drop position and store token functions
-
-
-//function uses a regex g modifer to do a global match between 0 and 9. in this case would be find the column id number.
-//colIndex is the selected column index
-//last index of x is the most bottom position in the column
-
 function checkDropPosition(id){ //pass in col id this.attr('id')
     var colIndex = parseInt(id.match(/[0-9]/g).join(''));
     dropPosition[0] = colIndex;
@@ -177,7 +171,6 @@ function checkWins() {
     checkDrawGame();
 }
 
-//colIndex is going to be dropped position at index 0
 function checkVerticalWin(colIndex){
     var theTokenColumn = gameBoardArr[colIndex];
 
@@ -195,7 +188,6 @@ function checkVerticalWin(colIndex){
     }
 }
 
-//rowPosIndex is going to be droppedposition at index 1
 function checkHorizontalWin(rowPosIndex){
 
     var match = 0;
@@ -266,11 +258,34 @@ function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
 }
 
 function updateDisplay(tileId) {
-  $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
-  occupiedTileCounter++;
-  // var tokenDrop = setTimeout(function() {
-  //     $(tileId+'> img').toggle('transition');
-  // }, 1500);
+
+    $('.column').off();
+
+    var columnTokens = $('#column' + dropPosition[0] + ' .tokenImg');
+    var currentRow = gameBoardArr[0].length - 1;
+    var glow = setInterval(dropAnimation, 250);
+
+
+    function dropAnimation(){
+        if(currentRow === dropPosition[1] + 1){
+            clearInterval(glow);
+            $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
+            occupiedTileCounter++;
+            addClickHandlers();
+        }
+        $(columnTokens[currentRow]).attr('src', playerArr[0].tokenColor);
+        setTimeout(blankReset, 500, columnTokens[currentRow]);
+        currentRow--;
+    }
+
+    function blankReset(element){
+        $(element).attr('src', './images/disc-blank.png');
+    }
+}
+
+function setTile(tileId){
+    $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);
+    occupiedTileCounter++;
 }
 
 function turnTimerToggle() {
@@ -279,15 +294,9 @@ function turnTimerToggle() {
 
 }
 
-//increment this after each disc is dropped
-var occupiedTileCounter = 0;
-
-//storing the max number of tiles
-var maxTiles = calcMaxTiles();
-
 //calculates max tiles
 function calcMaxTiles(){
-    maxTiles = gameBoardArr.length*gameBoardArr[0].length
+    maxTiles = gameBoardArr.length*gameBoardArr[0].length;
     // for(var i = 0; i < gameBoardArr.length; i++){
     //     maxTiles += gameBoardArr[i].length;
     // }
