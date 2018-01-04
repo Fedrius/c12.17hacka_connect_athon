@@ -9,7 +9,7 @@ var occupiedTileCounter = 0;
 function initializeApp(){
     $('.start-button').on('click', startGame);
 }
-
+// Pre-game set-up logic below:
 function startGame(){
     $('.start-button').css('display', 'none');
     $('.player-number-container').css('display', 'flex');
@@ -38,9 +38,54 @@ function selectPlayers(){
     $('.main-splash-container').css('display', 'flex');
 }
 
-function createInputFields(num){
+function makePlayerTokenArr(num = 2) {
+    var playerTokenArr = [];
+    for (var i=1;i<=num;i++) {
+        playerTokenArr.push({
+            'playerNumber': i,
+            'name': 'User' + i,
+            'tokenColor': ''
+        });
+    }
+    return playerTokenArr;
+}
 
-    var lineBreak = $("<br>");
+function createGameBoard(row,column) {
+    var rows = row || 6;
+    var columns = column || 7;
+
+    for (var columnIndex = 0; columnIndex<columns; columnIndex++) {
+        var columnElement = $('<div>')
+            .addClass('column')
+            .attr('id','column'+columnIndex);
+        for (var heightIndex = 0; heightIndex<rows; heightIndex++) {
+            var tileElement = $('<div>')
+                .addClass('tile')
+                .attr('id','r' + heightIndex + 'c' + columnIndex);
+            var tokenImg = $('<img>').attr('src','images/494949.png').addClass('tokenImg');
+            tileElement.append(tokenImg);
+            tileElement.appendTo(columnElement);
+        }
+        columnElement.appendTo($('#gameBoard'));
+    }
+}
+
+function createArrGameBoard(rows = 6, cols = 7) {
+    var gameBoardArr = [];
+    for(var i=1;i<=cols;i++) {
+        var colArr = new Array(rows);
+        colArr.fill('X');
+        gameBoardArr.push(colArr);
+    }
+    return gameBoardArr;
+}
+
+function calcMaxTiles(){
+    maxTiles = gameBoardArr.length*gameBoardArr[0].length;
+    return maxTiles;
+}
+
+function createInputFields(num){
 
     for(var index = 1; index <= num; index++){
         var container = $("<div>").addClass('player-' + index + '-container').css({"display": "none", "flex-direction": "column"});
@@ -80,7 +125,6 @@ function getUserInfo(){
     if(playerArr[0].playerNumber === playerArr.length){
         hideIntro();
     }
-
     cyclePlayers(playerArr);
 }
 
@@ -90,78 +134,32 @@ function hideIntro(){
     $('.background').css('opacity', 0.2);
     randomizeFirstMove();
 }
-
-function makePlayerTokenArr(num = 2) {
-    var playerTokenArr = [];
-    for (var i=1;i<=num;i++) {
-        playerTokenArr.push({
-            'playerNumber': i,
-            'name': 'User' + i,
-            'tokenColor': ''
-        });
-    }
-    return playerTokenArr;
-}
-
-function createGameBoard(row,column) {
-    var rows = row || 6;
-    var columns = column || 7;
-
-    for (var columnIndex = 0; columnIndex<columns; columnIndex++) {
-        var columnElement = $('<div>')
-            .addClass('column')
-            .attr('id','column'+columnIndex);
-        for (var heightIndex = 0; heightIndex<rows; heightIndex++) {
-            var tileElement = $('<div>')
-                .addClass('tile')
-                .attr('id','r' + heightIndex + 'c' + columnIndex);
-            var tokenImg = $('<img>').attr('src','images/494949.png').addClass('tokenImg');
-            tileElement.append(tokenImg);
-            tileElement.appendTo(columnElement);
-        }
-        columnElement.appendTo($('#gameBoard'));
-    }
-}
-
-//called when user selects amount of players
-function createArrGameBoard(rows = 6, cols = 7) {
-    var gameBoardArr = [];
-    for(var i=1;i<=cols;i++) {
-        var colArr = new Array(rows); // column height === # of rows
-        colArr.fill('X'); //'X' is placeholder for empty title
-        gameBoardArr.push(colArr);
-    }
-    return gameBoardArr;
-}
-
+// Game logic below:
 function addClickHandlers(){
     $('.column').on('click', function() {
         checkDropPosition($(this).attr('id'));
         if(dropPosition[1] === -1) {
-            console.log('that col is full'); return 'that col is full';
+            return ;
         }
         storeToken(dropPosition);
         checkWins();
-        // cyclePlayers(playerArr);
         }
     )
 }
 
-function checkMove() {
-
-}
-function randomizeFirstMove(){ // Determines which player gets to place token down first.
-    var random = Math.ceil(Math.random() * playerArr.length); // Creates a random number based on the length of array.
-    while (random !== playerArr[0].playerNumber) { // As long as player at 0 does not equal random number
-        cyclePlayers(playerArr); // continue to cycle array.
+// Determines which player goes first.
+function randomizeFirstMove(){
+    var random = Math.ceil(Math.random() * playerArr.length);
+    while (random !== playerArr[0].playerNumber) {
+        cyclePlayers(playerArr);
     }
 }
-
+// Changes current player turn.
 function cyclePlayers(array) {
     array.push(array.shift());
     columnColor();
 }
-
+// Changes column indicator color.
 function columnColor(){
     var colorCode = playerArr[0].tokenColor.slice(-10,-4);
     $('.column').hover(
@@ -188,6 +186,38 @@ function storeToken(DropPosArray){
     updateDisplay('#r'+dropPosition[1]+'c'+dropPosition[0]);
 }
 
+function updateDisplay(tileId) {
+    if(dropPosition[1] === gameBoardArr[0].length-1) {
+        $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);
+        cyclePlayers(playerArr);
+        return occupiedTileCounter++;
+    }
+    $('.column').off('click');
+
+    var columnTokens = $('#column' + dropPosition[0] + ' .tokenImg');
+    var currentRow = gameBoardArr[0].length - 1;
+    var glow = setInterval(dropAnimation, 50);
+
+    function dropAnimation(){
+
+        if(currentRow === dropPosition[1] + 1){
+            clearInterval(glow);
+            $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);
+            occupiedTileCounter++;
+            cyclePlayers(playerArr);
+            addClickHandlers();
+        }
+        $(columnTokens[currentRow]).attr('src', playerArr[0].tokenColor);
+        setTimeout(blankReset, 50, columnTokens[currentRow]);
+        currentRow--;
+    }
+
+    function blankReset(element){
+        $(element).attr('src', './images/494949.png');
+    }
+}
+
+// Win check logic starts below:
 function checkWins() {
     checkVerticalWin(dropPosition[0]);
     checkHorizontalWin(dropPosition[1]);
@@ -206,8 +236,6 @@ function checkVerticalWin(colIndex){
             if(match >= 4){
                 endGame('VERTICAL');
                 return;
-                // console.log('winnnner');//player wins
-                // break;
             }
         } else {
             match = 0;
@@ -224,8 +252,6 @@ function checkHorizontalWin(rowPosIndex){
             if (match >= 4) {
                 endGame('HORIZONTAL');
                 return;
-                // console.log('winnnner');//player wins
-                // break;
             }
         } else {
             match = 0;
@@ -261,10 +287,7 @@ function checkNEDiagonals(dropPos) { //dropPos = array [col#, height]
     if (counter >= 3) {
         endGame('DIAGONAL');
         return;
-        // console.log('win');
-        // return playerWin(playerArr[0]);
     }
-    // dropPosition = origDropPosition;
 }
 
 function checkSWDiagonals(dropPos) { //dropPos = array [col#, height]
@@ -296,12 +319,17 @@ function checkSWDiagonals(dropPos) { //dropPos = array [col#, height]
     if (counter >= 3) {
         endGame('DIAGONAL');
         return;
-        // console.log('win');
-        // return playerWin(playerArr[0]);
     }
-    // dropPosition = origDropPosition;
 }
 
+function checkDrawGame(){
+    if(occupiedTileCounter === maxTiles){
+        endGame('DRAW');
+        return;
+    }
+}
+
+// End game logic starts below:
 function endGame(typeOfWin){
     var winModal = $('.win-modal');
     var userName = $('.winning-player');
@@ -319,83 +347,10 @@ function endGame(typeOfWin){
         endingMove.text('WITH A  ' + typeOfWin + ' WIN' );
     }
 
-
-
     $('.play-again').on('click', softResetGame);
     $('.reset').on('click', resetBackToSplash);
 
     return;
-}
-
-function updateDisplay(tileId) {
-    if(dropPosition[1] === gameBoardArr[0].length-1) {
-        $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
-        cyclePlayers(playerArr);
-        return occupiedTileCounter++;
-    }
-    $('.column').off('click');
-
-    var columnTokens = $('#column' + dropPosition[0] + ' .tokenImg');
-    var currentRow = gameBoardArr[0].length - 1;
-    var glow = setInterval(dropAnimation, 50);
-
-
-    function dropAnimation(){
-
-        if(currentRow === dropPosition[1] + 1){
-            clearInterval(glow);
-            $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
-            occupiedTileCounter++;
-            cyclePlayers(playerArr)
-            addClickHandlers();
-        }
-        $(columnTokens[currentRow]).attr('src', playerArr[0].tokenColor);
-        setTimeout(blankReset, 50, columnTokens[currentRow]);
-        currentRow--;
-    }
-
-    function blankReset(element){
-        $(element).attr('src', './images/494949.png');
-    }
-}
-
-function setTile(tileId){
-    $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);
-    occupiedTileCounter++;
-}
-
-function turnTimerToggle() {
-    var counter = 15 - Math.min(11, Math.floor(occupiedTileCounter/2)); // turnTimer starts at 15secs and will minus 1 every 2 turns; min. time = 4 secs
-    if(timerOn) {
-        clearInterval(startTimer);
-    }
-    var startTimer = setInterval(function() {
-        counter--;
-        if (!counter) {
-            clearInterval(startTimer);
-            turnTimerToggle();
-        }
-    }, 1000);
-}
-
-//calculates max tiles
-function calcMaxTiles(){
-    maxTiles = gameBoardArr.length*gameBoardArr[0].length;
-    // for(var i = 0; i < gameBoardArr.length; i++){
-    //     maxTiles += gameBoardArr[i].length;
-    // }
-    return maxTiles;
-}
-
-//checks if the game is a draw
-function checkDrawGame(){
-    if(occupiedTileCounter === maxTiles){
-        endGame('DRAW');
-        return;
-        // console.log('draw game');
-        // console.log('restarting in 5 sec');
-        // setTimeout(softResetGame, 5000)
-    }
 }
 
 function softResetGame(){
@@ -403,8 +358,7 @@ function softResetGame(){
     occupiedTileCounter = 0;
     $('#gameBoard .column').remove();
     gameBoardArr = createArrGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2)));
-    createGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2))); //need to put in parameters for dynamic game board
-    //hide the modal if there was a win and want to restart game
+    createGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2)));
     addClickHandlers();
 }
 
@@ -417,3 +371,18 @@ function resetBackToSplash(){
     $('#gameBoard').css('display', 'none');
     $('.intro-container').css('display', 'flex');
 }
+
+// In ongoing development:
+// function turnTimerToggle() {
+//     var counter = 15 - Math.min(11, Math.floor(occupiedTileCounter/2)); // turnTimer starts at 15secs and will minus 1 every 2 turns; min. time = 4 secs
+//     if(timerOn) {
+//         clearInterval(startTimer);
+//     }
+//     var startTimer = setInterval(function() {
+//         counter--;
+//         if (!counter) {
+//             clearInterval(startTimer);
+//             turnTimerToggle();
+//         }
+//     }, 1000);
+// }
