@@ -311,8 +311,15 @@ function endGame(typeOfWin){
 
     winModal.css('display', 'flex');
 
-    userName.text(playerArr[0].name + ' WINS!').css('text-shadow', '0 0 15px #' + playerColor);
-    endingMove.text('WITH A  ' + typeOfWin + ' WIN' );
+    if(typeOfWin ==='DRAW'){
+        userName.text(typeOfWin).css('text-shadow', '0 0 15px #ffffff');
+        endingMove.css('display', 'none');
+    }else{
+        userName.text(playerArr[0].name + ' WINS!').css('text-shadow', '0 0 15px #' + playerColor);
+        endingMove.text('WITH A  ' + typeOfWin + ' WIN' );
+    }
+
+
 
     $('.play-again').on('click', softResetGame);
     $('.reset').on('click', resetBackToSplash);
@@ -383,9 +390,11 @@ function calcMaxTiles(){
 //checks if the game is a draw
 function checkDrawGame(){
     if(occupiedTileCounter === maxTiles){
-        console.log('draw game');
-        console.log('restarting in 5 sec');
-        setTimeout(softResetGame, 5000)
+        endGame('DRAW');
+        return;
+        // console.log('draw game');
+        // console.log('restarting in 5 sec');
+        // setTimeout(softResetGame, 5000)
     }
 }
 
