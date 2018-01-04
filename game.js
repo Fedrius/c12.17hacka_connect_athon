@@ -127,7 +127,6 @@ function createArrGameBoard(rows = 6, cols = 7) {
 
 function addClickHandlers(){
     $('.column').on('click', function() {
-        console.log('You clicked on column:' + $(this).attr('id'));
         checkDropPosition($(this).attr('id'));
         if(dropPosition[1] === -1) {
             console.log('that col is full'); return 'that col is full';
@@ -150,21 +149,25 @@ function getFirstMove(){ // Determines which player gets to place token down fir
 }
 
 function cyclePlayers(array) {
-    var colorCode = playerArr[0].tokenColor.slice(-10,-4);
+    columnColor();
     array.push(array.shift());
+}
+
+function columnColor(){
+
+    var colorCode = playerArr[0].tokenColor.slice(-10,-4);
+
     $('.column').hover(
         function(){
-        $(this).css({
-            'border': '2px solid #' + colorCode,
-            'box-shadow': '0px 0px 6px 0px rgba(255,255,255,1)'
-        })
+            $(this).css({
+                'box-shadow': 'inset 0px 0px 10px 6px #' + colorCode
+            })
         },
         function(){
-        $(this).css({
-            'border': '1px solid black',
-            'box-shadow': '0px 0px 0px 0px rgba(0,0,0,0)'
+            $(this).css({
+                'box-shadow': '0px 0px 0px 0px rgba(0,0,0,0)'
             })
-    })
+        });
 }
 
 function checkDropPosition(id){ //pass in col id this.attr('id')
@@ -183,7 +186,6 @@ function checkWins() {
     checkHorizontalWin(dropPosition[1]);
     checkNEDiagonals(dropPosition);
     checkSWDiagonals(dropPosition);
-
     checkDrawGame();
 }
 
