@@ -2,6 +2,7 @@ $(document).ready(initializeApp);
 
 function initializeApp(){
     $('.start-button').on('click', startGame);
+    addClickHandlers();
 }
 
 function startGame(){
@@ -49,6 +50,7 @@ function createInputFields(num){
 var gameBoardArr = createArrGameBoard();
 var playerArr = makePlayerTokenArr();
 var dropPosition = new Array(2);
+var maxTiles = calcMaxTiles();
 
 //called when user selects amount of players
 function makePlayerTokenArr(num = 2) {
@@ -95,11 +97,16 @@ function createArrGameBoard(rows = 6, cols = 7) {
     return gameBoardArr;
 }
 
-function clickHandler(){
+function addClickHandlers(){
     $('.column').on('click', function() {
+        console.log('You clicked on column:' + $(this).attr('id'))
         checkDropPosition($(this).attr('id'));
-
-            console.log('You clicked on column:' + $(this).attr('id'))
+        if(dropPosition[1] === -1) {
+            console.log('that col is full'); return 'that col is full';
+        }
+        storeToken(dropPosition);
+        checkWins();
+        cyclePlayers();
         }
     )
 }
@@ -136,6 +143,13 @@ function storeToken(DropPosArray){
     updateDisplay('#r'+dropPosition[1]+'c'+dropPosition[0]);
 }
 
+function checkWins() {
+    checkVerticalWin(dropPosition[0]);
+    checkHorizontalWin(dropPosition[1]);
+    checkSWDiagonals(dropPosition);
+    checkNEDiagonals(dropPosition);
+    checkDrawGame();
+}
 //colIndex is going to be dropped position at index 0
 function checkVerticalWin(colIndex){
     var theTokenColumn = gameboardArr[colIndex];
@@ -218,6 +232,7 @@ function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
 
 function updateDisplay(tileId) {
   $(tileId+'> img').css('opacity','1.0').attr('src', 'images/disc-'+playerArr[0].tokenColor+'.png');//.toggle('transition');
+  occupiedTileCounter++;
   // var tokenDrop = setTimeout(function() {
   //     $(tileId+'> img').toggle('transition');
   // }, 1500);
@@ -237,10 +252,10 @@ var maxTiles = calcMaxTiles();
 
 //calculates max tiles
 function calcMaxTiles(){
-    var maxTiles = 0;
-    for(var i = 0; i < gameBoardArr.length; i++){
-        maxTiles += gameBoardArr[i].length;
-    }
+    maxTiles = gameBoardArr.length*gameBoardArr[0].length
+    // for(var i = 0; i < gameBoardArr.length; i++){
+    //     maxTiles += gameBoardArr[i].length;
+    // }
     return maxTiles;
 }
 
