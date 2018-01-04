@@ -1,9 +1,8 @@
 $(document).ready(initializeApp);
 
-var gameBoardArr = createArrGameBoard();
-var playerArr = makePlayerTokenArr();
+var gameBoardArr = [];
+var playerArr = [];
 var dropPosition = new Array(2);
-var maxTiles = calcMaxTiles();
 
 function initializeApp(){
     $('.start-button').on('click', startGame);
@@ -71,6 +70,11 @@ function getUserInfo(){
 
     cyclePlayers(playerArr);
 }
+
+var gameBoardArr = createArrGameBoard();
+var playerArr = makePlayerTokenArr();
+var dropPosition = new Array(2);
+var maxTiles = calcMaxTiles();
 
 function hideIntro(){
     $('.main-splash-container').hide();
@@ -172,8 +176,9 @@ function storeToken(DropPosArray){
 function checkWins() {
     checkVerticalWin(dropPosition[0]);
     checkHorizontalWin(dropPosition[1]);
-    checkSWDiagonals(dropPosition);
     checkNEDiagonals(dropPosition);
+    checkSWDiagonals(dropPosition);
+
     checkDrawGame();
 }
 //colIndex is going to be dropped position at index 0
@@ -214,15 +219,19 @@ function checkHorizontalWin(rowPosIndex){
 function checkNEDiagonals(dropPosition) { //dropPosition = array [col#, height]
     var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
     var counter = 0;
-    if (dropPosition[0] !== gameBoardArr.length-1 && dropPosition [1] !== gameBoardArr[0].length-1) {
+    if(dropPosition[0] === gameBoardArr.length-1 ||dropPosition[1] === gameBoardArr[0].length-1) {
+        '';
+    } else {
         while( cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]+1] ) { // while top right corner is the same token move to top right corner;
             dropPosition[0]++; dropPosition[1]++;
-            if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+            if(dropPosition[0] === gameBoardArr[0].length || dropPosition[1] === gameBoardArr[0].length) {
                 break;
             }
         }
     }
-    if(dropPosition[0] !== 0 && dropPosition[1] !== 0) {
+    if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+        '';
+    } else {
         while(cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]-1]) {
             dropPosition[0]--; dropPosition[1]--;
             counter++;
@@ -237,23 +246,27 @@ function checkNEDiagonals(dropPosition) { //dropPosition = array [col#, height]
     }
 }
 
+
 function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
     var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
     var counter = 0;
-    //SW -> NE diag check
-    if(dropPosition[0] !== 0 && dropPosition[1] !== gameBoardArr[0].length-1) {
+    if(dropPosition[0] === 0 || dropPosition[1] === gameBoardArr[0].length-1) {
+        '';
+    } else {
         while( cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]+1]) {
             dropPosition[0]--; dropPosition[1]++;
-            if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+            if(dropPosition[0] === 0 || dropPosition[1] === gameBoardArr[0].length-1) {
                 break;
             }
         }
     }
-    if (dropPosition[0] < gameBoardArr[0].length-1 && dropPosition[1] > 0) {
+    if(dropPosition[0] === gameBoardArr.length-1 ||dropPosition[1] === 0) {
+        '';
+    } else {
         while(cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]-1]) {
             dropPosition[0]++; dropPosition[1]--;
             counter++;
-            if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+            if(dropPosition[0] === gameBoardArr.length-1 || dropPosition[1] === 0) {
                 break;
             }
         }
