@@ -73,11 +73,6 @@ function getUserInfo(){
     cyclePlayers(playerArr);
 }
 
-var gameBoardArr = createArrGameBoard();
-var playerArr = makePlayerTokenArr();
-var dropPosition = new Array(2);
-var maxTiles = calcMaxTiles();
-
 function hideIntro(){
     $('.main-splash-container').hide();
     $('#gameBoard').css('display', 'flex');
