@@ -318,7 +318,7 @@ function endGame(typeOfWin){
     endingMove.text('WITH A  ' + typeOfWin + ' WIN' );
 
     $('.play-again').on('click', softResetGame);
-    $('.reset-game').on('click', resetBackToSplash);
+    $('.reset').on('click', resetBackToSplash);
 
     return;
 
@@ -397,15 +397,17 @@ function checkDrawGame(){
 }
 
 function softResetGame(){
+    $('.win-modal').hide();
     occupiedTileCounter = 0;
     $('#gameBoard .column').remove();
-    gameBoardArr = createArrGameBoard(); //need to put in parameters for dynamic game board
-    createGameBoard(); //need to put in parameters for dynamic game board
+    gameBoardArr = createArrGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2)));
+    createGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2))); //need to put in parameters for dynamic game board
     //hide the modal if there was a win and want to restart game
     addClickHandlers();
 }
 
 function resetBackToSplash(){
+    $('.win-modal').hide();
     occupiedTileCounter = 0;
     $('#gameBoard .column').remove();
     $('.player-input-container div').remove();
