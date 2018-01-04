@@ -145,7 +145,7 @@ function addClickHandlers(){
         }
         storeToken(dropPosition);
         checkWins();
-        cyclePlayers(playerArr);
+        // cyclePlayers(playerArr);
         }
     )
 }
@@ -235,27 +235,27 @@ function checkHorizontalWin(rowPosIndex){
     }
 }
 
-function checkNEDiagonals(dropPos) { //dropPosition = array [col#, height]
-    var origDropPosition = dropPos.slice();
-    var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
+function checkNEDiagonals(dropPos) { //dropPos = array [col#, height]
+    var cursor = dropPos.slice();
+    var cursorVal = gameBoardArr[cursor[0]][cursor[1]];
     var counter = 0;
-    if(dropPosition[0] === gameBoardArr.length-1 ||dropPosition[1] === gameBoardArr[0].length-1) {
+    if(cursor[0] === gameBoardArr.length-1 ||cursor[1] === gameBoardArr[0].length-1) {
         //if loop is going to go out of bounds, do not enter
     } else {
-        while( cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]+1] ) { // while top right corner is the same token move to top right corner;
-            dropPosition[0]++; dropPosition[1]++;
-            if(dropPosition[0] === gameBoardArr[0].length || dropPosition[1] === gameBoardArr[0].length) {
+        while( cursorVal === gameBoardArr[cursor[0]+1][cursor[1]+1] ) { // while top right corner is the same token move to top right corner;
+            cursor[0]++; cursor[1]++;
+            if(cursor[0] === gameBoardArr[0].length || cursor[1] === gameBoardArr[0].length) {
                 break;
             }
         }
     }
-    if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+    if(cursor[0] === 0 || cursor[1] === 0) {
         //if loop is going to go out of bounds, do not enter
     } else {
-        while(cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]-1]) {
-            dropPosition[0]--; dropPosition[1]--;
+        while(cursorVal === gameBoardArr[cursor[0]-1][cursor[1]-1]) {
+            cursor[0]--; cursor[1]--;
             counter++;
-            if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+            if(cursor[0] === 0 || cursor[1] === 0) {
                 break;
             }
         }
@@ -266,31 +266,32 @@ function checkNEDiagonals(dropPos) { //dropPosition = array [col#, height]
         // console.log('win');
         // return playerWin(playerArr[0]);
     }
-    dropPosition = origDropPosition;
+    // dropPosition = origDropPosition;
 }
 
 
-function checkSWDiagonals(dropPos) { //dropPosition = array [col#, height]
-    var origDropPosition = dropPos.slice();
-    var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
+function checkSWDiagonals(dropPos) { //dropPos = array [col#, height]
+    var cursor = dropPos.slice();
+    var cursorVal = gameBoardArr[cursor[0]][cursor[1]];
     var counter = 0;
-    if(dropPosition[0] === 0 || dropPosition[1] === gameBoardArr[0].length-1) {
+    if(cursor[0] === 0 || cursor[1] === gameBoardArr[0].length-1) {
         //if loop is going to go out of bounds, do not enter
     } else {
-        while( cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]+1]) {
-            dropPosition[0]--; dropPosition[1]++;
-            if(dropPosition[0] === 0 || dropPosition[1] === gameBoardArr[0].length-1) {
+        while( cursorVal === gameBoardArr[cursor[0]-1][cursor[1]+1]) {
+            cursor[0]--; cursor[1]++;
+            if(cursor[0] === 0 || cursor[1] === gameBoardArr[0].length-1) {
                 break;
             }
         }
     }
-    if(dropPosition[0] === gameBoardArr.length-1 ||dropPosition[1] === 0) {
+
+    if(cursor[0] === gameBoardArr.length-1 ||cursor[1] === 0) {
         //if loop is going to go out of bounds, do not enter
     } else {
-        while(cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]-1]) {
-            dropPosition[0]++; dropPosition[1]--;
+        while(cursorVal === gameBoardArr[cursor[0]+1][cursor[1]-1]) {
+            cursor[0]++; cursor[1]--;
             counter++;
-            if(dropPosition[0] === gameBoardArr.length-1 || dropPosition[1] === 0) {
+            if(cursor[0] === gameBoardArr.length-1 || cursor[1] === 0) {
                 break;
             }
         }
@@ -301,7 +302,7 @@ function checkSWDiagonals(dropPos) { //dropPosition = array [col#, height]
         // console.log('win');
         // return playerWin(playerArr[0]);
     }
-    dropPosition = origDropPosition;
+    // dropPosition = origDropPosition;
 }
 
 function endGame(typeOfWin){
@@ -327,6 +328,7 @@ function endGame(typeOfWin){
 function updateDisplay(tileId) {
     if(dropPosition[1] === gameBoardArr[0].length-1) {
         $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
+        cyclePlayers(playerArr)
         return occupiedTileCounter++;
     }
     $('.column').off('click');
@@ -342,10 +344,11 @@ function updateDisplay(tileId) {
             clearInterval(glow);
             $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
             occupiedTileCounter++;
+            cyclePlayers(playerArr)
             addClickHandlers();
         }
         $(columnTokens[currentRow]).attr('src', playerArr[0].tokenColor);
-        setTimeout(blankReset, 100, columnTokens[currentRow]);
+        setTimeout(blankReset, 50, columnTokens[currentRow]);
         currentRow--;
     }
 
@@ -360,7 +363,17 @@ function setTile(tileId){
 }
 
 function turnTimerToggle() {
-    var counter = 15 - (occupiedTileCounter/2);
+    var counter = 15 - Math.min(11, Math.floor(occupiedTileCounter/2)); // turnTimer starts at 15secs and will minus 1 every 2 turns; min. time = 4 secs
+    if(timerOn) {
+        clearInterval(startTimer);
+    }
+    var startTimer = setInterval(function() {
+        counter--;
+        if (!counter) {
+            clearInterval(startTimer);
+            turnTimerToggle();
+        }
+    }, 1000);
 
 
 }
