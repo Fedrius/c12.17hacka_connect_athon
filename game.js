@@ -89,7 +89,7 @@ function createInputFields(num){
 
     for(var index = 1; index <= num; index++){
         var container = $("<div>").addClass('player-' + index + '-container').css({"display": "none", "flex-direction": "column"});
-        var nameInput = $("<input>").attr('type', 'text').attr('placeholder', 'User ' + index);
+        var nameInput = $("<input>").attr('type', 'text').attr('placeholder', 'USER ' + index + ' NAME HERE');
 
         container.append(nameInput);
         $('.player-input-container').append(container);
@@ -109,7 +109,7 @@ function createInputFields(num){
 function getUserInfo(){
     var currentPlayerInput = $('.player-' + playerArr[0].playerNumber +'-container > input');
     if(currentPlayerInput.val() === ''){
-        currentPlayerInput.attr('placeholder');
+        playerArr[0].name = 'USER ' + playerArr[0].playerNumber;
     } else {
         playerArr[0].name = currentPlayerInput.val();
     }
