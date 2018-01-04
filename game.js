@@ -38,7 +38,6 @@ function selectPlayers(){
     $('.main-splash-container').css('display', 'flex');
 }
 
-
 function createInputFields(num){
 
     var lineBreak = $("<br>");
@@ -91,7 +90,6 @@ function hideIntro(){
     $('.background').css('opacity', 0.2);
 }
 
-
 function makePlayerTokenArr(num = 2) {
     var playerTokenArr = [];
     for (var i=1;i<=num;i++) {
@@ -103,7 +101,6 @@ function makePlayerTokenArr(num = 2) {
     }
     return playerTokenArr;
 }
-
 
 function createGameBoard(row,column) {
     var rows = row || 6;
@@ -217,7 +214,6 @@ function checkVerticalWin(colIndex){
             match = 0;
         }
     }
-
 }
 
 function checkHorizontalWin(rowPosIndex){
@@ -272,7 +268,6 @@ function checkNEDiagonals(dropPos) { //dropPos = array [col#, height]
     // dropPosition = origDropPosition;
 }
 
-
 function checkSWDiagonals(dropPos) { //dropPos = array [col#, height]
     var cursor = dropPos.slice();
     var cursorVal = gameBoardArr[cursor[0]][cursor[1]];
@@ -324,8 +319,6 @@ function endGame(typeOfWin){
     $('.reset-game').on('click', resetBackToSplash);
 
     return;
-
-
 }
 
 function updateDisplay(tileId) {
@@ -377,8 +370,6 @@ function turnTimerToggle() {
             turnTimerToggle();
         }
     }, 1000);
-
-
 }
 
 //calculates max tiles
