@@ -150,6 +150,10 @@ function getFirstMove(){ // Determines which player gets to place token down fir
 
 function cyclePlayers(array) {
     array.push(array.shift());
+    var colorCode = playerArr[0].slice(-10,6);
+    $('.column').hover(function(){
+        $(this).css('border', '2px solid #' + colorCode);
+    })
 }
 
 function checkDropPosition(id){ //pass in col id this.attr('id')
