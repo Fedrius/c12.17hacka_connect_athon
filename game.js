@@ -27,9 +27,29 @@ function selectPlayers(){
     $('.main-splash-container').css('display', 'flex');
 }
 
+
+function createInputFields(num){
+
+    var lineBreak = $("<br>");
+
+    for(var index = 1; index <= num; index++){
+        var container = $("<div>").addClass('player-' + index + '-container').css({"display": "none", "flex-direction": "column"});
+        var title = $("<div>").addClass('player-title').text('User ' + index + ':');
+        var nameInput = $("<input>").attr('type', 'text');
+        var submit = $("<button>").addClass('submit').text('SUBMIT').css('margin-top', '5vh');
+
+        container.append(title, nameInput, lineBreak , lineBreak, submit);
+        $('.player-input-container').append(container);
+    }
+
+    $('.player-1-container').css('display', 'flex');
+
+}
+
 var gameBoardArr = createArrGameBoard();
 var playerArr = makePlayerTokenArr();
 var dropPosition = new Array(2);
+
 //called when user selects amount of players
 function makePlayerTokenArr(num = 2) {
     var playerTokenArr = [];

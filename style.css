@@ -127,7 +127,7 @@ main{
     overflow: hidden;
 }
 
-.player-input-container input[type=button]{
+.submit{
     width: 15vw;
     height: 7vh;
     background: transparent;
@@ -137,7 +137,7 @@ main{
     border: solid 2px white;
 }
 
-.player-input-container input[type=button]:hover{
+.submit:hover{
     background: white;
     color: black;
     cursor: pointer;
