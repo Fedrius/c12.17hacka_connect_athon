@@ -47,7 +47,7 @@ function createInputFields(num){
     for(var index = 1; index <= num; index++){
         var container = $("<div>").addClass('player-' + index + '-container').css({"display": "none", "flex-direction": "column"});
         var title = $("<div>").addClass('player-title ' + index).text('User ' + index);
-        var nameInput = $("<input>").attr('type', 'text');
+        var nameInput = $("<input>").attr('type', 'text').attr('placeholder', 'User ' + index);
 
         container.append(title, nameInput);
         $('.player-input-container').append(container);
@@ -59,7 +59,12 @@ function createInputFields(num){
 
 function getUserInfo(){
 
-    playerArr[0].name = $('<input>').val();
+    if($('<input>').val() === undefined){
+        playerArr[0].name = $('<input>').val();
+    } else {
+        $('.player-1-container > input').attr('placeholder');
+    }
+
     playerArr[0].tokenColor = $(this).attr('src');
 
     $(this).attr('src', './images/494949.png');
@@ -87,22 +92,22 @@ function makePlayerTokenArr(num = 2) {
         playerTokenArr.push({
             'playerNumber': i,
             'name': 'User' + i,
-            'tokenColor': '',
+            'tokenColor': ''
         });
     }
     return playerTokenArr;
 }
 
-//called when user selects amount of players
-function createGameBoard(row,column) { // Function that creates game board.
-    var rows = row || 6; // Declared variable takes in number of rows or defaults to six.
-    var column = column || 7; // Declared variable takes in number of columns or defaults to seven.
 
-    for (var columnIndex = 0; columnIndex<column; columnIndex++) { // For loop that creates columns.
+function createGameBoard(row,column) {
+    var rows = row || 6;
+    var columns = column || 7;
+
+    for (var columnIndex = 0; columnIndex<columns; columnIndex++) {
         var columnElement = $('<div>')
             .addClass('column')
             .attr('id','column'+columnIndex);
-        for (var heightIndex = 0; heightIndex<rows; heightIndex++) { // For loop that creates tiles.
+        for (var heightIndex = 0; heightIndex<rows; heightIndex++) {
             var tileElement = $('<div>')
                 .addClass('tile')
                 .attr('id','r' + heightIndex + 'c' + columnIndex);
@@ -183,7 +188,6 @@ function checkWins() {
     checkHorizontalWin(dropPosition[1]);
     checkNEDiagonals(dropPosition);
     checkSWDiagonals(dropPosition);
-
     checkDrawGame();
 }
 
@@ -195,13 +199,16 @@ function checkVerticalWin(colIndex){
         if(gameBoardArr[colIndex][dropPosition[1]] === theTokenColumn[columnIndex]){
             match++;
             if(match >= 4){
-                console.log('winnnner');//player wins
-                break;
+                endGame('VERTICAL');
+                return;
+                // console.log('winnnner');//player wins
+                // break;
             }
         } else {
             match = 0;
         }
     }
+
 }
 
 function checkHorizontalWin(rowPosIndex){
@@ -211,8 +218,10 @@ function checkHorizontalWin(rowPosIndex){
         if (gameBoardArr[dropPosition[0]][rowPosIndex] === gameBoardArr[columnIndex][rowPosIndex]) {
             match++;
             if (match >= 4) {
-                console.log('winnnner');//player wins
-                break;
+                endGame('HORIZONTAL');
+                return;
+                // console.log('winnnner');//player wins
+                // break;
             }
         } else {
             match = 0;
@@ -225,7 +234,7 @@ function checkNEDiagonals(dropPos) { //dropPosition = array [col#, height]
     var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
     var counter = 0;
     if(dropPosition[0] === gameBoardArr.length-1 ||dropPosition[1] === gameBoardArr[0].length-1) {
-        '';
+        //if loop is going to go out of bounds, do not enter
     } else {
         while( cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]+1] ) { // while top right corner is the same token move to top right corner;
             dropPosition[0]++; dropPosition[1]++;
@@ -235,7 +244,7 @@ function checkNEDiagonals(dropPos) { //dropPosition = array [col#, height]
         }
     }
     if(dropPosition[0] === 0 || dropPosition[1] === 0) {
-        '';
+        //if loop is going to go out of bounds, do not enter
     } else {
         while(cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]-1]) {
             dropPosition[0]--; dropPosition[1]--;
@@ -246,7 +255,9 @@ function checkNEDiagonals(dropPos) { //dropPosition = array [col#, height]
         }
     }
     if (counter >= 3) {
-        console.log('win');
+        endGame('DIAGONAL');
+        return;
+        // console.log('win');
         // return playerWin(playerArr[0]);
     }
     dropPosition = origDropPosition;
@@ -258,7 +269,7 @@ function checkSWDiagonals(dropPos) { //dropPosition = array [col#, height]
     var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
     var counter = 0;
     if(dropPosition[0] === 0 || dropPosition[1] === gameBoardArr[0].length-1) {
-        '';
+        //if loop is going to go out of bounds, do not enter
     } else {
         while( cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]+1]) {
             dropPosition[0]--; dropPosition[1]++;
@@ -268,7 +279,7 @@ function checkSWDiagonals(dropPos) { //dropPosition = array [col#, height]
         }
     }
     if(dropPosition[0] === gameBoardArr.length-1 ||dropPosition[1] === 0) {
-        '';
+        //if loop is going to go out of bounds, do not enter
     } else {
         while(cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]-1]) {
             dropPosition[0]++; dropPosition[1]--;
@@ -279,10 +290,32 @@ function checkSWDiagonals(dropPos) { //dropPosition = array [col#, height]
         }
     }
     if (counter >= 3) {
-        console.log('win');
+        endGame('DIAGONAL');
+        return;
+        // console.log('win');
         // return playerWin(playerArr[0]);
     }
     dropPosition = origDropPosition;
+}
+
+function endGame(typeOfWin){
+    var winModal = $('.win-modal');
+    var userName = $('.winning-player');
+    var endingMove = $('.winning-play');
+    var playerColor = playerArr[0].tokenColor;
+    playerColor = playerColor.slice(-10,15);
+
+    winModal.css('display', 'flex');
+
+    userName.text(playerArr[0].name + ' WINS!').css('text-shadow', '0 0 15px #' + playerColor);
+    endingMove.text('WITH A  ' + typeOfWin + ' WIN' );
+
+    $('.play-again').on('click', softResetGame);
+    $('.reset-game').on('click', resetBackToSplash);
+
+    return;
+
+
 }
 
 function updateDisplay(tileId) {
