@@ -1,5 +1,9 @@
 $(document).ready(initializeApp);
 
+var gameBoardArr = [];
+var playerArr = [];
+var dropPosition = new Array(2);
+
 function initializeApp(){
     $('.start-button').on('click', startGame);
 }
@@ -21,7 +25,11 @@ function selectPlayers(){
         playerAmount = 4;
     }
 
-    makePlayerTokenArr(playerAmount);
+    playerArr = makePlayerTokenArr(playerAmount);
+    gameBoardArr = createArrGameBoard();
+    createInputFields(playerAmount);
+    createGameBoard();
+
 
     $('.intro-container').css('display', 'none');
     $('.main-splash-container').css('display', 'flex');
@@ -34,23 +42,40 @@ function createInputFields(num){
 
     for(var index = 1; index <= num; index++){
         var container = $("<div>").addClass('player-' + index + '-container').css({"display": "none", "flex-direction": "column"});
-        var title = $("<div>").addClass('player-title').text('User ' + index);
+        var title = $("<div>").addClass('player-title ' + index).text('User ' + index);
         var nameInput = $("<input>").attr('type', 'text');
-        // var submit = $("<button>").addClass('submit').text('SUBMIT').css('margin-top', '5vh');
 
         container.append(title, nameInput);
         $('.player-input-container').append(container);
     }
 
     $('.player-1-container').css('display', 'flex');
-
+    $('.token').on('click', getUserInfo);
 }
 
-var gameBoardArr = createArrGameBoard();
-var playerArr = makePlayerTokenArr();
-var dropPosition = new Array(2);
+function getUserInfo(){
 
-//called when user selects amount of players
+    playerArr[0].name = $('<input>').val();
+    playerArr[0].tokenColor = $(this).attr('src');
+
+    $(this).attr('src', './images/disc-blank.png');
+    $(this).off('click').removeClass('glow');
+    $('.player-'+playerArr[0].playerNumber+'-container').css('display', 'none');
+    $('.player-'+ (playerArr[0].playerNumber+1) +'-container').css('display', 'flex');
+
+    if(playerArr[0].playerNumber === playerArr.length){
+        hideIntro();
+    }
+
+    cyclePlayers(playerArr);
+}
+
+function hideIntro(){
+    $('.main-splash-container').hide();
+    $('#gameBoard').css('display', 'flex');
+    $('.background').css('opacity', 0.2);
+}
+
 function makePlayerTokenArr(num = 2) {
     var playerTokenArr = [];
     for (var i=1;i<=num;i++) {
