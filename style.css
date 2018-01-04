@@ -50,15 +50,6 @@ body {
     text-shadow: 0 0 10px #ffffff;
 }
 
-.player-number{
-    display: none;
-    color: white;
-    font-family: 'Share Tech', sans-serif;
-    font-size: 3em;
-    justify-content: center;
-    width: 100%;
-}
-
 .player-number-container{
     display: none;
     align-content: center;
@@ -72,6 +63,7 @@ body {
     font-family: 'Share Tech', sans-serif;
     font-size: 3em;
     text-align: center;
+    z-index: 1;
 }
 
 .player-amount:hover{
@@ -79,8 +71,10 @@ body {
     text-shadow: 0 0 10px #ffffff;
 }
 
-.container{
+.main-splash-container{
     display: none;
+    height:100vh;
+    width: 100vw;
 }
 
 .title{
