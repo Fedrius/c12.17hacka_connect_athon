@@ -27,7 +27,11 @@ function selectPlayers(){
     $('.main-splash-container').css('display', 'flex');
 }
 
-function makePlayerTokenArr(num) {
+var gameBoardArr = createArrGameBoard();
+var playerArr = makePlayerTokenArr();
+var dropPosition = new Array(2);
+//called when user selects amount of players
+function makePlayerTokenArr(num = 2) {
     var playerTokenArr = [];
     for (var i=1;i<=num;i++) {
         playerTokenArr.push({
@@ -52,6 +56,8 @@ function createGameBoard(row,column) { // Function that creates game board.
             var tileElement = $('<div>')
                 .addClass('tile')
                 .attr('id','r' + heightIndex + 'c' + columnIndex);
+            var tokenImg = $('<img>').attr('src','images/disc-blank.png').addClass('tokenImg');
+            tileElement.append(tokenImg);
             tileElement.appendTo(columnElement);
         }
         columnElement.appendTo($('#gameBoard'));
@@ -71,15 +77,20 @@ function createArrGameBoard(rows = 6, cols = 7) {
 
 function clickHandler(){
     $('.column').on('click', function() {
+        checkDropPosition($(this).attr('id'));
+
             console.log('You clicked on column:' + $(this).attr('id'))
         }
     )
 }
 
+function checkMove() {
+
+}
 function getFirstMove(){ // Determines which player gets to place token down first.
     var random = Math.ceil(Math.random() * playerArr.length); // Creates a random number based on the length of array.
     while (random !== playerArr[0].playerNumber) { // As long as player at 0 does not equal random number
-        cyclePlayers(); // continue to cycle array.
+        cyclePlayers(playerArr); // continue to cycle array.
     }
 }
 
@@ -88,20 +99,21 @@ function cyclePlayers(array) {
 }
 
 //check drop position and store token functions
-var dropPosition = [];
+
 
 //function uses a regex g modifer to do a global match between 0 and 9. in this case would be find the column id number.
 //colIndex is the selected column index
 //last index of x is the most bottom position in the column
 
-function checkDropPosition(id){
-    var colIndex = parseInt(/[0-9]/g.match[id].join(''));
-    dropPosition.push(colIndex, gameboardArr[colIndex].lastIndexOf('x'));
+function checkDropPosition(id){ //pass in col id this.attr('id')
+    var colIndex = parseInt(id.match(/[0-9]/g).join(''));
+    dropPosition[0] = colIndex;
+    dropPosition[1] = gameBoardArr[colIndex].indexOf('X');
 }
 
 function storeToken(DropPosArray){
-    gameboardArr[DropPosArray[0]][DropPosArray[1]] = playerArr[0].tokenColor;
-    updateDisplay();
+    gameBoardArr[DropPosArray[0]][DropPosArray[1]] = playerArr[0].tokenColor;
+    updateDisplay('#r'+dropPosition[1]+'c'+dropPosition[0]);
 }
 
 //colIndex is going to be dropped position at index 0
@@ -178,10 +190,23 @@ function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
             break;
         }
     }
-    if (counter > 3) {
+    if (counter >= 3) {
         console.log('win');
         // return playerWin(playerArr[0]);
     }
+}
+
+function updateDisplay(tileId) {
+  $(tileId+'> img').css('opacity','1.0').attr('src', 'images/disc-'+playerArr[0].tokenColor+'.png');//.toggle('transition');
+  // var tokenDrop = setTimeout(function() {
+  //     $(tileId+'> img').toggle('transition');
+  // }, 1500);
+}
+
+function turnTimerToggle() {
+    var counter = 15 - (occupiedTileCounter/2);
+
+
 }
 
 function checkDrawGame(){
