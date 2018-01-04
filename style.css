@@ -128,7 +128,6 @@ main{
 }
 
 input:hover{
-
 }
 
 .submit{
@@ -204,4 +203,55 @@ input:hover{
     opacity: 0.4;
 }
 
+.win-modal{
+    display: none;
+    z-index: 100;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.8);
+    align-content: center;
+}
+
+.win-container{
+    height: 50%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.winning-player{
+    color: white;
+    font-family: 'Share Tech', sans-serif;
+    font-size: 8em;
+    z-index: 150;
+    width: 100vw;
+    text-align: center;
+}
+
+.winning-play{
+    color: white;
+    font-family: 'Share Tech', sans-serif;
+    font-size: 2.5em;
+    z-index: 150;
+    text-shadow: 0 0 10px #ffffff;
+    width: 100vw;
+    text-align: center;
+}
+
+.win-button{
+    width: 15vw;
+    height: 7vh;
+    background: transparent;
+    color: white;
+    font-family: 'Share Tech', sans-serif;
+    font-size: 1.5em;
+    border: solid 2px white;
+    z-index: 150
+}
+
+.win-button:hover{
+    background: white;
+    color: black;
+    cursor: pointer;
+}
 
