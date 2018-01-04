@@ -136,7 +136,7 @@ function addClickHandlers(){
         }
         storeToken(dropPosition);
         checkWins();
-        cyclePlayers();
+        cyclePlayers(playerArr);
         }
     )
 }
@@ -169,7 +169,7 @@ function checkDropPosition(id){ //pass in col id this.attr('id')
 }
 
 function storeToken(DropPosArray){
-    gameBoardArr[DropPosArray[0]][DropPosArray[1]] = playerArr[0].tokenColor;
+    gameBoardArr[DropPosArray[0]][DropPosArray[1]] = playerArr[0].playerNumber;
     updateDisplay('#r'+dropPosition[1]+'c'+dropPosition[0]);
 }
 
@@ -182,11 +182,11 @@ function checkWins() {
 }
 //colIndex is going to be dropped position at index 0
 function checkVerticalWin(colIndex){
-    var theTokenColumn = gameboardArr[colIndex];
+    var theTokenColumn = gameBoardArr[colIndex];
 
     var match = 0;
     for(var columnIndex = 0; columnIndex < theTokenColumn.length - 1; columnIndex++){
-        if(theTokenColumn[columnIndex] === theTokenColumn[columnIndex + 1]){
+        if(theTokenColumn[colIndex] === theTokenColumn[columnIndex + 1]){
             match++;
             if(match >= 3){
                 console.log('winnnner');//player wins
@@ -202,8 +202,8 @@ function checkVerticalWin(colIndex){
 function checkHorizontalWin(rowPosIndex){
 
     var match = 0;
-    for (var columnIndex = 0; columnIndex < gameboardArr.length - 1; columnIndex++) {
-        if (gameboardArr[columnIndex][rowPosIndex] === gameboardArr[columnIndex + 1][rowPosIndex]) {
+    for (var columnIndex = 0; columnIndex < gameBoardArr.length - 1; columnIndex++) {
+        if (gameBoardArr[columnIndex][rowPosIndex] === gameBoardArr[columnIndex + 1][rowPosIndex]) {
             match++;
             if (match >= 3) {
                 console.log('winnnner');//player wins
@@ -218,17 +218,21 @@ function checkHorizontalWin(rowPosIndex){
 function checkNEDiagonals(dropPosition) { //dropPosition = array [col#, height]
     var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
     var counter = 0;
-    while( cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]+1]) { // while top right corner is the same token move to top right corner;
-        dropPosition[0]++; dropPosition[1]++;
-        if(dropPosition[0] === gameBoardArr[0].length || dropPosition[1] === gameBoardArr[0].length) {
-            break;
+    if (dropPosition[0] !== gameBoardArr.length-1 && dropPosition [1] !== gameBoardArr[0].length-1) {
+        while( cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]+1] ) { // while top right corner is the same token move to top right corner;
+            dropPosition[0]++; dropPosition[1]++;
+            if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+                break;
+            }
         }
     }
-    while(cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]-1]) {
-        dropPosition[0]--; dropPosition[1]--;
-        counter++;
-        if(dropPosition[0] === 0 || dropPosition[1] === 0) {
-            break;
+    if(dropPosition[0] !== 0 && dropPosition[1] !== 0) {
+        while(cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]-1]) {
+            dropPosition[0]--; dropPosition[1]--;
+            counter++;
+            if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+                break;
+            }
         }
     }
     if (counter >= 3) {
@@ -241,17 +245,21 @@ function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
     var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
     var counter = 0;
     //SW -> NE diag check
-    while( cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]+1]) {
-        dropPosition[0]--; dropPosition[1]++;
-        if(dropPosition[0] === 0 || dropPosition[1] === 0) {
-            break;
+    if(dropPosition[0] !== 0 && dropPosition[1] !== gameBoardArr[0].length-1) {
+        while( cursorVal === gameBoardArr[dropPosition[0]-1][dropPosition[1]+1]) {
+            dropPosition[0]--; dropPosition[1]++;
+            if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+                break;
+            }
         }
     }
-    while(cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]-1]) {
-        dropPosition[0]++; dropPosition[1]--;
-        counter++;
-        if(dropPosition[0] === 0 || dropPosition[1] === 0) {
-            break;
+    if (dropPosition[0] < gameBoardArr[0].length-1 && dropPosition[1] > 0) {
+        while(cursorVal === gameBoardArr[dropPosition[0]+1][dropPosition[1]-1]) {
+            dropPosition[0]++; dropPosition[1]--;
+            counter++;
+            if(dropPosition[0] === 0 || dropPosition[1] === 0) {
+                break;
+            }
         }
     }
     if (counter >= 3) {
@@ -261,7 +269,7 @@ function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
 }
 
 function updateDisplay(tileId) {
-  $(tileId+'> img').css('opacity','1.0').attr('src', 'images/disc-'+playerArr[0].tokenColor+'.png');//.toggle('transition');
+  $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
   occupiedTileCounter++;
   // var tokenDrop = setTimeout(function() {
   //     $(tileId+'> img').toggle('transition');
