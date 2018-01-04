@@ -63,11 +63,11 @@ function createInputFields(num){
 }
 
 function getUserInfo(){
-
-    if($('<input>').val() === undefined){
-        playerArr[0].name = $('<input>').val();
+    var currentPlayerInput = $('.player-' + playerArr[0].playerNumber +'-container > input');
+    if(currentPlayerInput.val() === ''){
+        currentPlayerInput.attr('placeholder');
     } else {
-        $('.player-1-container > input').attr('placeholder');
+        playerArr[0].name = currentPlayerInput.val();
     }
 
     playerArr[0].tokenColor = $(this).attr('src');
@@ -322,7 +322,7 @@ function endGame(typeOfWin){
 function updateDisplay(tileId) {
     if(dropPosition[1] === gameBoardArr[0].length-1) {
         $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
-        cyclePlayers(playerArr)
+        cyclePlayers(playerArr);
         return occupiedTileCounter++;
     }
     $('.column').off('click');
