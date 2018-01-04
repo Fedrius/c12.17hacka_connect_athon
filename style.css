@@ -190,6 +190,14 @@ main{
     border: 1px solid #00ffff;
     height: 16%;
     width: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.tokenImg {
+    width:auto;
+    height:90%;
+    opacity: 0.4;
 }
 
 
