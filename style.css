@@ -127,6 +127,10 @@ main{
     overflow: hidden;
 }
 
+input:hover{
+
+}
+
 .submit{
     width: 15vw;
     height: 7vh;

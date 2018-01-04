@@ -92,16 +92,16 @@ function makePlayerTokenArr(num = 2) {
     return playerTokenArr;
 }
 
-//called when user selects amount of players
-function createGameBoard(row,column) { // Function that creates game board.
-    var rows = row || 6; // Declared variable takes in number of rows or defaults to six.
-    var column = column || 7; // Declared variable takes in number of columns or defaults to seven.
 
-    for (var columnIndex = 0; columnIndex<column; columnIndex++) { // For loop that creates columns.
+function createGameBoard(row,column) {
+    var rows = row || 6;
+    var columns = column || 7;
+
+    for (var columnIndex = 0; columnIndex<columns; columnIndex++) {
         var columnElement = $('<div>')
             .addClass('column')
             .attr('id','column'+columnIndex);
-        for (var heightIndex = 0; heightIndex<rows; heightIndex++) { // For loop that creates tiles.
+        for (var heightIndex = 0; heightIndex<rows; heightIndex++) {
             var tileElement = $('<div>')
                 .addClass('tile')
                 .attr('id','r' + heightIndex + 'c' + columnIndex);
