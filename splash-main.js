@@ -35,14 +35,22 @@ function createInputFields(num){
 
     for(var index = 1; index <= num; index++){
         var container = $("<div>").addClass('player-' + index + '-container').css({"display": "none", "flex-direction": "column"});
-        var title = $("<div>").addClass('player-title').text('User ' + index + ':');
+        var title = $("<div>").addClass('player-title').text('User ' + index);
         var nameInput = $("<input>").attr('type', 'text');
-        var submit = $("<button>").addClass('submit').text('SUBMIT').css('margin-top', '5vh');
 
-        container.append(title, nameInput, lineBreak , lineBreak, submit);
+        container.append(title, nameInput);
         $('.player-input-container').append(container);
     }
 
     $('.player-1-container').css('display', 'flex');
+    $('.token').on('click', getUserInfo);
+}
+
+function getUserInfo(){
+    var user = $('.player-title').text().slice(-1);
+    user = parseInt(user);
+    playerArr
 
 }
+
+

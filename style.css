@@ -163,7 +163,7 @@ main{
     width: 15%;
 }
 
-.token:hover{
+.glow:hover{
     -webkit-filter: drop-shadow(0px 0px 10px #ffffff);
     filter: drop-shadow(0px 0px 10px #ffffff);
     cursor: pointer;
