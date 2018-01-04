@@ -4,11 +4,10 @@ var gameBoardArr = [];
 var playerArr = [];
 var dropPosition = new Array(2);
 var maxTiles = null;
-var occupiedTileCounter = 40;
+var occupiedTileCounter = 0;
 
 function initializeApp(){
     $('.start-button').on('click', startGame);
-    addClickHandlers();
 }
 
 function startGame(){
@@ -29,11 +28,11 @@ function selectPlayers(){
     }
 
     playerArr = makePlayerTokenArr(playerAmount);
-    gameBoardArr = createArrGameBoard();
     createInputFields(playerAmount);
-    createGameBoard();
+    gameBoardArr = createArrGameBoard((2+(playerAmount*2)),(3+(playerAmount*2)));
+    createGameBoard((2+(playerAmount*2)),(3+(playerAmount*2)));
     maxTiles = calcMaxTiles();
-
+    addClickHandlers();
 
     $('.intro-container').css('display', 'none');
     $('.main-splash-container').css('display', 'flex');
@@ -206,7 +205,8 @@ function checkHorizontalWin(rowPosIndex){
     }
 }
 
-function checkNEDiagonals(dropPosition) { //dropPosition = array [col#, height]
+function checkNEDiagonals(dropPos) { //dropPosition = array [col#, height]
+    var origDropPosition = dropPos.slice();
     var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
     var counter = 0;
     if(dropPosition[0] === gameBoardArr.length-1 ||dropPosition[1] === gameBoardArr[0].length-1) {
@@ -234,10 +234,12 @@ function checkNEDiagonals(dropPosition) { //dropPosition = array [col#, height]
         console.log('win');
         // return playerWin(playerArr[0]);
     }
+    dropPosition = origDropPosition;
 }
 
 
-function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
+function checkSWDiagonals(dropPos) { //dropPosition = array [col#, height]
+    var origDropPosition = dropPos.slice();
     var cursorVal = gameBoardArr[dropPosition[0]][dropPosition[1]];
     var counter = 0;
     if(dropPosition[0] === 0 || dropPosition[1] === gameBoardArr[0].length-1) {
@@ -265,18 +267,23 @@ function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
         console.log('win');
         // return playerWin(playerArr[0]);
     }
+    dropPosition = origDropPosition;
 }
 
 function updateDisplay(tileId) {
-
-    $('.column').off();
+    if(dropPosition[1] === gameBoardArr[0].length-1) {
+        $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
+        return occupiedTileCounter++;
+    }
+    $('.column').off('click');
 
     var columnTokens = $('#column' + dropPosition[0] + ' .tokenImg');
     var currentRow = gameBoardArr[0].length - 1;
-    var glow = setInterval(dropAnimation, 250);
+    var glow = setInterval(dropAnimation, 50);
 
 
     function dropAnimation(){
+
         if(currentRow === dropPosition[1] + 1){
             clearInterval(glow);
             $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
@@ -284,7 +291,7 @@ function updateDisplay(tileId) {
             addClickHandlers();
         }
         $(columnTokens[currentRow]).attr('src', playerArr[0].tokenColor);
-        setTimeout(blankReset, 500, columnTokens[currentRow]);
+        setTimeout(blankReset, 100, columnTokens[currentRow]);
         currentRow--;
     }
 
