@@ -181,15 +181,16 @@ function checkWins() {
 
     checkDrawGame();
 }
+
 //colIndex is going to be dropped position at index 0
 function checkVerticalWin(colIndex){
     var theTokenColumn = gameBoardArr[colIndex];
 
     var match = 0;
-    for(var columnIndex = 0; columnIndex < theTokenColumn.length - 1; columnIndex++){
-        if(theTokenColumn[colIndex] === theTokenColumn[columnIndex + 1]){
+    for(var columnIndex = 0; columnIndex < theTokenColumn.length; columnIndex++){
+        if(gameBoardArr[colIndex][dropPosition[1]] === theTokenColumn[columnIndex]){
             match++;
-            if(match >= 3){
+            if(match >= 4){
                 console.log('winnnner');//player wins
                 break;
             }
@@ -203,10 +204,10 @@ function checkVerticalWin(colIndex){
 function checkHorizontalWin(rowPosIndex){
 
     var match = 0;
-    for (var columnIndex = 0; columnIndex < gameBoardArr.length - 1; columnIndex++) {
-        if (gameBoardArr[columnIndex][rowPosIndex] === gameBoardArr[columnIndex + 1][rowPosIndex]) {
+    for (var columnIndex = 0; columnIndex < gameBoardArr.length; columnIndex++) {
+        if (gameBoardArr[dropPosition[0]][rowPosIndex] === gameBoardArr[columnIndex][rowPosIndex]) {
             match++;
-            if (match >= 3) {
+            if (match >= 4) {
                 console.log('winnnner');//player wins
                 break;
             }
