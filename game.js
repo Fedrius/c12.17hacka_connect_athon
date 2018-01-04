@@ -38,7 +38,6 @@ function selectPlayers(){
     $('.main-splash-container').css('display', 'flex');
 }
 
-
 function createInputFields(num){
 
     var lineBreak = $("<br>");
@@ -64,11 +63,11 @@ function createInputFields(num){
 }
 
 function getUserInfo(){
-
-    if($('<input>').val() === undefined){
-        playerArr[0].name = $('<input>').val();
+    var currentPlayerInput = $('.player-' + playerArr[0].playerNumber +'-container > input');
+    if(currentPlayerInput.val() === ''){
+        currentPlayerInput.attr('placeholder');
     } else {
-        $('.player-1-container > input').attr('placeholder');
+        playerArr[0].name = currentPlayerInput.val();
     }
 
     playerArr[0].tokenColor = $(this).attr('src');
@@ -92,7 +91,6 @@ function hideIntro(){
     randomizeFirstMove();
 }
 
-
 function makePlayerTokenArr(num = 2) {
     var playerTokenArr = [];
     for (var i=1;i<=num;i++) {
@@ -104,7 +102,6 @@ function makePlayerTokenArr(num = 2) {
     }
     return playerTokenArr;
 }
-
 
 function createGameBoard(row,column) {
     var rows = row || 6;
@@ -139,7 +136,6 @@ function createArrGameBoard(rows = 6, cols = 7) {
 
 function addClickHandlers(){
     $('.column').on('click', function() {
-        console.log('You clicked on column:' + $(this).attr('id'));
         checkDropPosition($(this).attr('id'));
         if(dropPosition[1] === -1) {
             console.log('that col is full'); return 'that col is full';
@@ -162,21 +158,23 @@ function randomizeFirstMove(){ // Determines which player gets to place token do
 }
 
 function cyclePlayers(array) {
-    var colorCode = playerArr[0].tokenColor.slice(-10,-4);
     array.push(array.shift());
+    columnColor();
+}
+
+function columnColor(){
+    var colorCode = playerArr[0].tokenColor.slice(-10,-4);
     $('.column').hover(
         function(){
-        $(this).css({
-            'border': '2px solid #' + colorCode,
-            'box-shadow': '0px 0px 6px 0px rgba(255,255,255,1)'
-        })
+            $(this).css({
+                'box-shadow': 'inset 0px 0px 10px 6px #' + colorCode
+            })
         },
         function(){
-        $(this).css({
-            'border': '1px solid black',
-            'box-shadow': '0px 0px 0px 0px rgba(0,0,0,0)'
+            $(this).css({
+                'box-shadow': '0px 0px 0px 0px rgba(0,0,0,0)'
             })
-    })
+        });
 }
 
 function checkDropPosition(id){ //pass in col id this.attr('id')
@@ -215,7 +213,6 @@ function checkVerticalWin(colIndex){
             match = 0;
         }
     }
-
 }
 
 function checkHorizontalWin(rowPosIndex){
@@ -270,7 +267,6 @@ function checkNEDiagonals(dropPos) { //dropPos = array [col#, height]
     // dropPosition = origDropPosition;
 }
 
-
 function checkSWDiagonals(dropPos) { //dropPos = array [col#, height]
     var cursor = dropPos.slice();
     var cursorVal = gameBoardArr[cursor[0]][cursor[1]];
@@ -319,17 +315,15 @@ function endGame(typeOfWin){
     endingMove.text('WITH A  ' + typeOfWin + ' WIN' );
 
     $('.play-again').on('click', softResetGame);
-    $('.reset-game').on('click', resetBackToSplash);
+    $('.reset').on('click', resetBackToSplash);
 
     return;
-
-
 }
 
 function updateDisplay(tileId) {
     if(dropPosition[1] === gameBoardArr[0].length-1) {
         $(tileId+'> img').css('opacity','1.0').attr('src', playerArr[0].tokenColor);//.toggle('transition');
-        cyclePlayers(playerArr)
+        cyclePlayers(playerArr);
         return occupiedTileCounter++;
     }
     $('.column').off('click');
@@ -375,8 +369,6 @@ function turnTimerToggle() {
             turnTimerToggle();
         }
     }, 1000);
-
-
 }
 
 //calculates max tiles
@@ -398,15 +390,17 @@ function checkDrawGame(){
 }
 
 function softResetGame(){
+    $('.win-modal').hide();
     occupiedTileCounter = 0;
     $('#gameBoard .column').remove();
-    gameBoardArr = createArrGameBoard(); //need to put in parameters for dynamic game board
-    createGameBoard(); //need to put in parameters for dynamic game board
+    gameBoardArr = createArrGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2)));
+    createGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2))); //need to put in parameters for dynamic game board
     //hide the modal if there was a win and want to restart game
     addClickHandlers();
 }
 
 function resetBackToSplash(){
+    $('.win-modal').hide();
     occupiedTileCounter = 0;
     $('#gameBoard .column').remove();
     $('.player-input-container div').remove();
