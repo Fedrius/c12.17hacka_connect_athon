@@ -50,6 +50,8 @@ function createArrGameBoard(rows = 6, cols = 7) {
     return gameBoardArr;
 }
 
+var gameBoardArr = createArrGameBoard();
+
 function clickHandler(){
     $('.column').on('click', function() {
             console.log('You clicked on column:' + $(this).attr('id'))
@@ -165,8 +167,24 @@ function checkSWDiagonals(dropPosition) { //dropPosition = array [col#, height]
     }
 }
 
-function checkDrawGame(){
-    for(var columnArrayIndex = 0; columnArrayIndex < gameboardArr.length; columnArrayIndex++){
+//increment this after each disc is dropped
+var occupiedTileCounter = 0;
 
+//storing the max number of tiles
+var maxTiles = calcMaxTiles();
+
+//calculates max tiles
+function calcMaxTiles(){
+    var maxTiles = 0;
+    for(var i = 0; i < gameBoardArr.length; i++){
+        maxTiles += gameBoardArr[i].length;
+    }
+    return maxTiles;
+}
+
+//checks if the game is a draw
+function checkDrawGame(){
+    if(occupiedTileCounter === maxTiles){
+        console.log('draw game')
     }
 }
