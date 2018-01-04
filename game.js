@@ -61,7 +61,7 @@ function getUserInfo(){
     playerArr[0].name = $('<input>').val();
     playerArr[0].tokenColor = $(this).attr('src');
 
-    $(this).attr('src', './images/disc-blank.png');
+    $(this).attr('src', './images/494949.png');
     $(this).off('click').removeClass('glow');
     $('.player-'+playerArr[0].playerNumber+'-container').css('display', 'none');
     $('.player-'+ (playerArr[0].playerNumber+1) +'-container').css('display', 'flex');
@@ -105,7 +105,7 @@ function createGameBoard(row,column) { // Function that creates game board.
             var tileElement = $('<div>')
                 .addClass('tile')
                 .attr('id','r' + heightIndex + 'c' + columnIndex);
-            var tokenImg = $('<img>').attr('src','images/disc-blank.png').addClass('tokenImg');
+            var tokenImg = $('<img>').attr('src','images/494949.png').addClass('tokenImg');
             tileElement.append(tokenImg);
             tileElement.appendTo(columnElement);
         }
@@ -149,7 +149,21 @@ function getFirstMove(){ // Determines which player gets to place token down fir
 }
 
 function cyclePlayers(array) {
+    var colorCode = playerArr[0].tokenColor.slice(-10,-4);
     array.push(array.shift());
+    $('.column').hover(
+        function(){
+        $(this).css({
+            'border': '2px solid #' + colorCode,
+            'box-shadow': '0px 0px 6px 0px rgba(255,255,255,1)'
+        })
+        },
+        function(){
+        $(this).css({
+            'border': '1px solid black',
+            'box-shadow': '0px 0px 0px 0px rgba(0,0,0,0)'
+            })
+    })
 }
 
 function checkDropPosition(id){ //pass in col id this.attr('id')
@@ -296,7 +310,7 @@ function updateDisplay(tileId) {
     }
 
     function blankReset(element){
-        $(element).attr('src', './images/disc-blank.png');
+        $(element).attr('src', './images/494949.png');
     }
 }
 
