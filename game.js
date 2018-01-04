@@ -3,8 +3,8 @@ $(document).ready(initializeApp);
 var gameBoardArr = [];
 var playerArr = [];
 var dropPosition = new Array(2);
-var maxTiles = calcMaxTiles();
-var occupiedTileCounter = 0;
+var maxTiles = null;
+var occupiedTileCounter = 40;
 
 function initializeApp(){
     $('.start-button').on('click', startGame);
@@ -32,6 +32,7 @@ function selectPlayers(){
     gameBoardArr = createArrGameBoard();
     createInputFields(playerAmount);
     createGameBoard();
+    maxTiles = calcMaxTiles();
 
 
     $('.intro-container').css('display', 'none');
@@ -316,10 +317,15 @@ function calcMaxTiles(){
 function checkDrawGame(){
     if(occupiedTileCounter === maxTiles){
         console.log('draw game');
-
+        console.log('restarting in 5 sec');
+        setTimeout(resetGame, 5000)
     }
 }
 
 function resetGame(){
     occupiedTileCounter = 0;
+    $('#gameBoard div').remove();
+    gameBoardArr = createArrGameBoard(); //need to put in parameters for dynamic game board
+    createGameBoard(); //need to put in parameters for dynamic game board
 }
+
