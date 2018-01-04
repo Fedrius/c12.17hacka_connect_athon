@@ -4,7 +4,7 @@ var gameBoardArr = [];
 var playerArr = [];
 var dropPosition = new Array(2);
 var maxTiles = null;
-var occupiedTileCounter = 0;
+var occupiedTileCounter = 40;
 
 function initializeApp(){
     $('.start-button').on('click', startGame);
@@ -339,14 +339,25 @@ function checkDrawGame(){
     if(occupiedTileCounter === maxTiles){
         console.log('draw game');
         console.log('restarting in 5 sec');
-        setTimeout(resetGame, 5000)
+        setTimeout(resetBackToSplash, 5000)
     }
 }
 
-function resetGame(){
+function softResetGame(){
     occupiedTileCounter = 0;
-    $('#gameBoard div').remove();
+    $('#gameBoard .column').remove();
     gameBoardArr = createArrGameBoard(); //need to put in parameters for dynamic game board
     createGameBoard(); //need to put in parameters for dynamic game board
+    //hide the modal if there was a win and want to restart game
 }
 
+function resetBackToSplash(){
+    occupiedTileCounter = 0;
+    playerArr = [];
+    $('#gameBoard .column').remove();
+    $('.player-input-container div').remove();
+    $('.token-container .token').removeClass('glow');
+    $('.token-container .token').addClass('glow');
+    $('#gameBoard').css('display', 'none');
+    $('.intro-container').css('display', 'flex');
+}
