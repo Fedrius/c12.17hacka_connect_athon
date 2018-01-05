@@ -369,6 +369,7 @@ function softResetGame(){
     gameBoardArr = createArrGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2)));
     createGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2)));
     addClickHandlers();
+    applyColHover();
 }
 
 function resetBackToSplash(){
