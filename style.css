@@ -257,6 +257,18 @@ input:hover{
     cursor: pointer;
 }
 
-.column:hover {
+.redColHover {
+    box-shadow: inset 0px 0px 10px 6px #bf0050;
 }
-
+.orangeColHover {
+    box-shadow: inset 0px 0px 10px 6px #ff610f;
+}
+.blueColHover {
+    box-shadow: inset 0px 0px 10px 6px #00ffff;
+}
+.yellowColHover {
+    box-shadow: inset 0px 0px 10px 6px #ffa91a;
+}
+.purpleColHover {
+    box-shadow: inset 0px 0px 10px 6px #731572;
+}
