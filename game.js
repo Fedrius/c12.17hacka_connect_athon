@@ -33,6 +33,7 @@ function selectPlayers(){
     createGameBoard((2+(playerAmount*2)),(3+(playerAmount*2)));
     maxTiles = calcMaxTiles();
     addClickHandlers();
+    applyColHover();
 
     $('.intro-container').css('display', 'none');
     $('.main-splash-container').css('display', 'flex');
@@ -136,6 +137,9 @@ function hideIntro(){
 // Game logic below:
 function addClickHandlers(){
     $('.column').on('click', function() {
+        // $(this).is(':hover').css({
+        //     'box-shadow': 'inset 0px 0px 10px 6px #' + playerArr[0].tokenColor.slice(-10,-4)
+        // });
         checkDropPosition($(this).attr('id'));
         if(dropPosition[1] === -1) {
             return ;
@@ -156,17 +160,23 @@ function randomizeFirstMove(){
 // Changes current player turn.
 function cyclePlayers(array) {
     array.push(array.shift());
-    columnColor();
+    // columnColor();
 }
 // Changes column indicator color.
-function columnColor(){
-    var colorCode = playerArr[0].tokenColor.slice(-10,-4);
+function applyColHover(){
+    // var colorCode = playerArr[0].tokenColor.slice(-10,-4);
     $('.column').hover(
         function(){
             $(this).css({
-                'box-shadow': 'inset 0px 0px 10px 6px #' + colorCode
+                'box-shadow': 'inset 0px 0px 10px 6px #' + playerArr[0].tokenColor.slice(-10,-4),
+            })
+            $(this).click(function() {
+                $(this).css({
+                    'box-shadow': 'inset 0px 0px 10px 6px #' + playerArr[1].tokenColor.slice(-10,-4),
+                })
             })
         },
+        // })
         function(){
             $(this).css({
                 'box-shadow': '0px 0px 0px 0px rgba(0,0,0,0)'
@@ -359,6 +369,7 @@ function softResetGame(){
     gameBoardArr = createArrGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2)));
     createGameBoard((2+(playerArr.length*2)),(3+(playerArr.length*2)));
     addClickHandlers();
+    applyColHover();
 }
 
 function resetBackToSplash(){
