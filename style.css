@@ -16,7 +16,7 @@ body {
     background-color: black;
     position: absolute;
     width: 100vw;
-    z-index: -1;
+    z-index: -2;
     opacity: 0.9;
 }
 
@@ -41,7 +41,7 @@ body {
     display: flex;
     color: white;
     font-family: 'Share Tech', sans-serif;
-    font-size: 3em;
+    font-size: 3.5vmax;
     justify-content: center;
     width: 100%;
 }
@@ -62,7 +62,7 @@ body {
     display: flex;
     color: white;
     font-family: 'Share Tech', sans-serif;
-    font-size: 3em;
+    font-size: 3.5vmax;
     text-align: center;
     z-index: 1;
 }
@@ -108,47 +108,17 @@ main{
     text-align: center;
 }
 
-.player-title{
-    color: white;
-    font-family: 'Share Tech', sans-serif;
-    font-size: 3em;
-    text-align: center;
-}
-
 .player-input-container input[type=text]{
     width: 25vw;
     height: 7vh;
     background: transparent;
     color: white;
-    font-family: 'Share Tech', sans-serif;
-    font-size: 2.5em;
+    font-family: Menlo, sans-serif;
+    font-size: 2.5vmax;
     border: none;
     border-bottom: solid 2px white;
     outline: none;
     overflow: hidden;
-}
-
-input:hover{
-}
-
-.submit{
-    width: 15vw;
-    height: 7vh;
-    background: transparent;
-    color: white;
-    font-family: 'Share Tech', sans-serif;
-    font-size: 1.5em;
-    border: solid 2px white;
-}
-
-.submit:hover{
-    background: white;
-    color: black;
-    cursor: pointer;
-}
-
-.player-1-container{
-    /*display:none;*/
 }
 
 .player-2-container{
@@ -199,8 +169,8 @@ input:hover{
     align-items: center;
 }
 .tokenImg {
-    width:auto;
-    height:90%;
+    width: 75%;
+    height: 90%;
     opacity: 0.4;
 }
 
@@ -224,7 +194,7 @@ input:hover{
 .winning-player{
     color: white;
     font-family: 'Share Tech', sans-serif;
-    font-size: 8em;
+    font-size: 9vmax;
     z-index: 150;
     width: 100vw;
     text-align: center;
@@ -233,7 +203,7 @@ input:hover{
 .winning-play{
     color: white;
     font-family: 'Share Tech', sans-serif;
-    font-size: 2.5em;
+    font-size: 3vmax;
     z-index: 150;
     text-shadow: 0 0 10px #ffffff;
     width: 100vw;
@@ -246,7 +216,7 @@ input:hover{
     background: transparent;
     color: white;
     font-family: 'Share Tech', sans-serif;
-    font-size: 1.5em;
+    font-size: 1.5vmax;
     border: solid 2px white;
     z-index: 150
 }
@@ -255,20 +225,4 @@ input:hover{
     background: white;
     color: black;
     cursor: pointer;
-}
-
-.redColHover {
-    box-shadow: inset 0px 0px 10px 6px #bf0050;
-}
-.orangeColHover {
-    box-shadow: inset 0px 0px 10px 6px #ff610f;
-}
-.blueColHover {
-    box-shadow: inset 0px 0px 10px 6px #00ffff;
-}
-.yellowColHover {
-    box-shadow: inset 0px 0px 10px 6px #ffa91a;
-}
-.purpleColHover {
-    box-shadow: inset 0px 0px 10px 6px #731572;
 }
