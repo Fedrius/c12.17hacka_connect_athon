@@ -16,7 +16,7 @@ body {
     background-color: black;
     position: absolute;
     width: 100vw;
-    z-index: -1;
+    z-index: -2;
     opacity: 0.9;
 }
 
@@ -121,13 +121,6 @@ main{
     overflow: hidden;
 }
 
-input:hover{
-}
-
-.player-1-container{
-    /*display:none;*/
-}
-
 .player-2-container{
     display: none;
 }
@@ -176,8 +169,8 @@ input:hover{
     align-items: center;
 }
 .tokenImg {
-    width:auto;
-    height:90%;
+    width: 75%;
+    height: 90%;
     opacity: 0.4;
 }
 
@@ -232,8 +225,5 @@ input:hover{
     background: white;
     color: black;
     cursor: pointer;
-}
-
-.column:hover {
 }
 
